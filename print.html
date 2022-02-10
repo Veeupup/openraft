@@ -144,28 +144,35 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 align="center">openraft</h1>
-<div align="center">
-    <strong>
-        Advanced <a href="https://raft.github.io/">Raft</a> using <a href="https://tokio.rs/">the Tokio framework</a>. Please ⭐ on <a href="https://github.com/datafuselabs/openraft">github</a>!
-    </strong>
-</div>
-<br/>
-<div align="center">
-<p><a href="https://github.com/datafuselabs/openraft/actions/workflows/ci.yaml"><img src="https://github.com/datafuselabs/openraft/actions/workflows/ci.yaml/badge.svg" alt="CI" /></a></p>
-<!-- [![Crates.io](https://img.shields.io/crates/v/openraft.svg)](https://crates.io/crates/openraft) -->
-<!-- [![docs.rs](https://docs.rs/openraft/badge.svg)](https://docs.rs/openraft) -->
-<p><a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue" alt="License" /></a></p>
-<!-- ![Crates.io](https://img.shields.io/crates/d/openraft.svg) -->
-<!-- ![Crates.io](https://img.shields.io/crates/dv/openraft.svg) -->
-</div>
-<br/>
+                        <h1 id="openraft"><a class="header" href="#openraft">Openraft</a></h1>
+<strong>
+    Advanced <a href="https://raft.github.io/">Raft</a> using <a href="https://tokio.rs/">the Tokio framework</a>. Please ⭐ on <a href="https://github.com/datafuselabs/openraft">github</a>!
+</strong>
 <hr />
+<p><a href="https://github.com/datafuselabs/openraft/actions/workflows/ci.yaml"><img src="https://github.com/datafuselabs/openraft/actions/workflows/ci.yaml/badge.svg" alt="CI" /></a>
+<a href="https://crates.io/crates/openraft"><img src="https://img.shields.io/crates/v/openraft.svg" alt="Crates.io" /></a>
+<a href="https://docs.rs/openraft"><img src="https://docs.rs/openraft/badge.svg" alt="docs.rs" /></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue" alt="License" /></a>
+<img src="https://img.shields.io/crates/d/openraft.svg" alt="Crates.io" />
+<img src="https://img.shields.io/crates/dv/openraft.svg" alt="Crates.io" /></p>
 <p>Raft is not yet good enough.
 This project intends to improve raft as the next generation consensus protocol for distributed data storage systems (SQL, NoSQL, KV, Streaming, Graph ... or maybe something more exotic).</p>
-<p><a href="https://datafuselabs.github.io/openraft">The guide</a> is the best place to get started.</p>
-<!-- , followed by [the docs](https://docs.rs/openraft/latest/) for more in-depth details. -->
+<p>Currently openraft is the consensus engine of meta-service cluster in <a href="https://github.com/datafuselabs/databend">databend</a>.</p>
+<ul>
+<li>
+<p><strong>Get started</strong>: <a href="https://datafuselabs.github.io/openraft">The guide</a> is the best place to get started,
+followed by <a href="https://docs.rs/openraft/latest/">the docs</a> for more in-depth details.</p>
+</li>
+<li>
+<p><strong>Openraft API is not stable yet.</strong> Before <code>1.0.0</code>, an upgrade may contain incompatible changes.
+Check our <a href="https://github.com/datafuselabs/openraft/blob/main/change-log.md">change-log</a></p>
+</li>
+<li>
 <p>Openraft is derived from <a href="https://docs.rs/crate/async-raft/latest">async-raft</a> with several bugs fixed:</p>
+</li>
+</ul>
+<details>
+  <summary>List of fixed bugs:</summary>
 <ul>
 <li>Fixed: <a href="https://github.com/datafuselabs/openraft/commit/6c0ccaf3ab3f262437d8fc021d4b13437fa4c9ac">6c0ccaf3</a> consider joint config when starting up and committing.; by drdr xp; 2021-12-24</li>
 <li>Fixed: <a href="https://github.com/datafuselabs/openraft/commit/228077a66d5099fd404ae9c68f0977e5f978f102">228077a6</a> a restarted follower should not wait too long to elect. Otherwise, the entire cluster hangs; by drdr xp; 2021-11-19</li>
@@ -192,6 +199,32 @@ This project intends to improve raft as the next generation consensus protocol f
 <li>Fixed: <a href="https://github.com/datafuselabs/openraft/commit/39690593a07c6b9ded4b7b8f1aca3191fa7641e4">39690593</a> a NonVoter should stay as NonVoter instead of Follower after restart; by drdr xp; 2021-05-14</li>
 </ul>
 <p>A full list of changes/fixes can be found in <a href="https://github.com/datafuselabs/openraft/blob/main/change-log.md">change-log</a></p>
+</details>
+<h1 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h1>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+<p><a href="https://datafuselabs.github.io/openraft/dynamic-membership.html#the-safe-to-relation">Extended joint membership</a></p>
+</li>
+<li><input disabled="" type="checkbox"/>
+<p>Reduce the complexity of vote and pre-vote: <a href="https://github.com/datafuselabs/openraft/discussions/15">get rid of pre-vote RPC</a>;</p>
+</li>
+<li><input disabled="" type="checkbox"/>
+<p>Reduce confliction rate when electing;
+Allow leadership to be taken in one term by a node with greater node-id.</p>
+</li>
+<li><input disabled="" type="checkbox"/>
+<p>Support flexible quorum, e.g.:<a href="https://zookeeper.apache.org/doc/r3.5.9/zookeeperHierarchicalQuorums.html">Hierarchical Quorums</a></p>
+</li>
+<li><input disabled="" type="checkbox"/>
+<p>Consider introducing read-quorum and write-quorum,
+improve efficiency with a cluster with an even number of nodes.</p>
+</li>
+</ul>
+<!--
+   - - [ ] Consider to separate log storage and log order storage.
+   -   Leader only determines and replicates the index of log entries, not log
+   -   payload.
+   -->
 <h1 id="features"><a class="header" href="#features">Features</a></h1>
 <ul>
 <li>
@@ -233,6 +266,10 @@ This can be used for <a href="https://docs.rs/tracing/latest/tracing/index.html#
 <h1 id="license"><a class="header" href="#license">License</a></h1>
 <p>Openraft is licensed under the terms of the MIT License or the Apache License 2.0, at your choosing.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<p>In this chapter we are going to build a key-value store cluster with <a href="https://github.com/datafuselabs/openraft">openraft</a>.</p>
+<p><a href="https://github.com/datafuselabs/openraft/tree/main/example-raft-kv">example-raft-kv</a>
+is the complete example application including the server, the client and a demo cluster.</p>
+<hr />
 <p>Raft is a distributed consensus protocol designed to manage a replicated log containing state machine commands from clients.</p>
 <p>
     <img style="max-width:600px;" src="./images/raft-overview.png"/>
@@ -243,13 +280,13 @@ This can be used for <a href="https://docs.rs/tracing/latest/tracing/index.html#
 <li>and how to consume the logs, which is defined mainly in state machine.</li>
 </ul>
 <p>To implement your own raft based application with openraft is quite easy, which
-includes: </p>
+includes:</p>
 <ul>
 <li>Define client request and response;</li>
 <li>Implement a storage to let raft store its state;</li>
 <li>Implement a network layer for raft to transmit messages.</li>
 </ul>
-<h2 id="define-client-request-and-response"><a class="header" href="#define-client-request-and-response">Define client request and response</a></h2>
+<h2 id="1-define-client-request-and-response"><a class="header" href="#1-define-client-request-and-response">1. Define client request and response</a></h2>
 <p>A request is some data that modifies the raft state machine.
 A response is some data that the raft state machine returns to client.</p>
 <p>Request and response can be any types that impl <code>AppData</code> and <code>AppDataResponse</code>,
@@ -258,48 +295,88 @@ e.g.:</p>
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct ClientRequest {/* fields */}
-impl AppData for ClientRequest {}
+pub struct ExampleRequest {/* fields */}
+impl AppData for ExampleRequest {}
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct ClientResponse(Result&lt;Option&lt;String&gt;, ClientError&gt;);
-impl AppDataResponse for ClientResponse {}
+pub struct ExampleResponse(Result&lt;Option&lt;String&gt;, ClientError&gt;);
+impl AppDataResponse for ExampleResponse {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>These two types are totally application specific, and are mainly related to the
 state machine implementation in <code>RaftStorage</code>.</p>
-<h2 id="implement-raftstorage"><a class="header" href="#implement-raftstorage">Implement RaftStorage</a></h2>
+<h2 id="2-implement-raftstorage"><a class="header" href="#2-implement-raftstorage">2. Implement <code>RaftStorage</code></a></h2>
 <p>The trait <code>RaftStorage</code> defines the way that data is stored and consumed.
 It could be a wrapper of some local KV store such <a href="https://docs.rs/rocksdb/latest/rocksdb/">RocksDB</a>,
 or a wrapper of a remote sql DB.</p>
-<p><code>RaftStorage</code> defines 4 sets of APIs:</p>
-<ul>
-<li>Read/write raft state, e.g., term or vote.</li>
-<li>Read/write logs.</li>
-<li>Apply log entry to the state machine.</li>
-<li>Building and installing a snapshot.</li>
-</ul>
-<h3 id="how-do-i-impl-raftstorage-correctly"><a class="header" href="#how-do-i-impl-raftstorage-correctly">How do I impl RaftStorage correctly</a></h3>
+<p><code>RaftStorage</code> defines 4 sets of APIs an application needs to implement:</p>
 <ul>
 <li>
-<p>The APIs have been made quite obvious and there is a good example
-<a href="https://github.com/datafuselabs/openraft/tree/main/memstore"><code>memstore</code></a>,
-which is a pure-in-memory implementation that shows what should be done when a
-method is called.</p>
-</li>
-<li>
-<p>There is a test suite for <code>RaftStorage</code> impl, if an impl passes the test,
-Openraft will work happily with it.</p>
-<p><a href="https://github.com/datafuselabs/openraft/blob/main/memstore/src/test.rs">Test suite for RaftStorage impl</a></p>
-<p>TODO(xp): move this test suite to openraft crate so that users can include it.</p>
+<p>Read/write raft state, e.g., term or vote.</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>// TODO(xp): give a example how to test an impl of RaftStorage
+</span>fn save_vote(vote:&amp;Vote)
+fn read_vote() -&gt; Result&lt;Option&lt;Vote&gt;&gt;
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>Read/write logs.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn get_log_state() -&gt; Result&lt;LogState&gt;
+fn try_get_log_entries(range) -&gt; Result&lt;Vec&lt;Entry&gt;&gt;
+
+fn append_to_log(entries)
+
+fn delete_conflict_logs_since(since:LogId)
+fn purge_logs_upto(upto:LogId)
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>Apply log entry to the state machine.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn last_applied_state() -&gt; Result&lt;(Option&lt;LogId&gt;, Option&lt;EffectiveMembership&gt;)&gt;
+fn apply_to_state_machine(entries) -&gt; Result&lt;Vec&lt;AppResponse&gt;&gt;
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>Building and installing a snapshot.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn build_snapshot() -&gt; Result&lt;Snapshot&gt;
+fn get_current_snapshot() -&gt; Result&lt;Option&lt;Snapshot&gt;&gt;
+
+fn begin_receiving_snapshot() -&gt; Result&lt;Box&lt;SnapshotData&gt;&gt;
+fn install_snapshot(meta, snapshot)
 <span class="boring">}
 </span></code></pre></pre>
 </li>
 </ul>
+<p>The APIs have been made quite obvious and there is a good example
+<a href="https://github.com/datafuselabs/openraft/blob/main/example-raft-kv/src/store/mod.rs"><code>ExampleStore</code></a>,
+which is a pure-in-memory implementation that shows what should be done when a
+method is called.</p>
+<h3 id="how-do-i-impl-raftstorage-correctly"><a class="header" href="#how-do-i-impl-raftstorage-correctly">How do I impl RaftStorage correctly</a></h3>
+<p>There is a <a href="https://github.com/datafuselabs/openraft/blob/main/memstore/src/test.rs">Test suite for RaftStorage</a>,
+if an implementation passes the test, openraft will work happily with it.</p>
+<p>To test your implementation with this suite, just do this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+pub fn test_mem_store() -&gt; anyhow::Result&lt;()&gt; {
+  openraft::testing::Suite::test_all(MemStore::new)
+}
+<span class="boring">}
+</span></code></pre></pre>
 <h3 id="race-condition-about-raftstorage"><a class="header" href="#race-condition-about-raftstorage">Race condition about RaftStorage</a></h3>
 <p>In our design, there is at most one thread at a time writing data to it.
 But there may be several threads reading from it concurrently,
@@ -307,7 +384,7 @@ e.g., more than one replication tasks reading log entries from store.</p>
 <h3 id="an-implementation-has-to-guarantee-data-durability"><a class="header" href="#an-implementation-has-to-guarantee-data-durability">An implementation has to guarantee data durability</a></h3>
 <p>The caller always assumes a completed write is persistent.
 The raft correctness highly depends on a reliable store.</p>
-<h2 id="impl-raftnetwork"><a class="header" href="#impl-raftnetwork">impl <code>RaftNetwork</code></a></h2>
+<h2 id="3-impl-raftnetwork"><a class="header" href="#3-impl-raftnetwork">3. impl <code>RaftNetwork</code></a></h2>
 <p>Raft nodes need to communicate with each other to achieve consensus about the
 logs.
 The trait <code>RaftNetwork</code> defines the data transmission requirements.</p>
@@ -325,99 +402,101 @@ where D: AppData
 }
 <span class="boring">}
 </span></code></pre></pre>
-<p>A mock impl in our tests explains what the impl has to do:
-<a href="https://github.com/datafuselabs/openraft/blob/main/openraft/tests/fixtures/mod.rs">fixture: mock impl RaftNetwork</a></p>
+<p><a href="https://github.com/datafuselabs/openraft/blob/main/example-raft-kv/src/network/raft.rs">ExampleNetwork</a>
+shows that how to forward message to other raft nodes.</p>
+<p>And there should be server endpoint for each of these RPCs.
+When the server receives a raft RPC, it just passes it to its <code>raft</code> instance and replies with what returned:
+<a href="https://github.com/datafuselabs/openraft/blob/main/example-raft-kv/src/network/raft.rs">raft-server-endpoint</a>.</p>
 <p>As a real world impl, you may want to use <a href="https://github.com/hyperium/tonic">Tonic gRPC</a>.
 <a href="https://github.com/datafuselabs/databend/blob/6603392a958ba8593b1f4b01410bebedd484c6a9/metasrv/src/network.rs#L89">databend-meta</a> would be a nice real world example.</p>
-<h2 id="put-everything-together"><a class="header" href="#put-everything-together">Put everything together</a></h2>
-<p>Finally we put these part together and boot up a raft node:</p>
-<pre><pre class="playground"><code class="language-rust">/// The application data request type which the `MemStore` works with.
-///
-/// Conceptually, for demo purposes, this represents an update to a client's status info,
-/// returning the previously recorded status.
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ClientRequest {
-    /// The ID of the client which has sent the request.
-    pub client: String,
-    /// The serial number of this request.
-    pub serial: u64,
-    /// A string describing the status of the client. For a real application, this should probably
-    /// be an enum representing all of the various types of requests / operations which a client
-    /// can perform.
-    pub status: String,
-}
-impl AppData for ClientRequest {}
-
-/// The application data response type which the `MemStore` works with.
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ClientResponse(Result&lt;Option&lt;String&gt;, ClientError&gt;);
-impl AppDataResponse for ClientResponse {}
-
-/// A type which emulates a network transport and implements the `RaftNetwork` trait.
-pub struct RaftRouter {
-    // ... some internal state ...
-}
-
-#[async_trait]
-impl RaftNetwork&lt;ClientRequest&gt; for RaftRouter {
-    /// Send an AppendEntries RPC to the target Raft node (§5).
-    async fn append_entries(&amp;self, target: u64, rpc: AppendEntriesRequest&lt;ClientRequest&gt;) -&gt; Result&lt;AppendEntriesResponse&gt; {
-        // ... snip ...
-    }
-
-    /// Send an InstallSnapshot RPC to the target Raft node (§7).
-    async fn install_snapshot(&amp;self, target: u64, rpc: InstallSnapshotRequest) -&gt; Result&lt;InstallSnapshotResponse&gt; {
-        // ... snip ...
-    }
-
-    /// Send a RequestVote RPC to the target Raft node (§5).
-    async fn vote(&amp;self, target: u64, rpc: VoteRequest) -&gt; Result&lt;VoteResponse&gt; {
-        // ... snip ...
-    }
-}
-
-#[async_trait]
-impl RaftStorage&lt;ClientRequest, ClientResponse&gt; for MemStore {
-    type Snapshot = Cursor&lt;Vec&lt;u8&gt;&gt;;
-
-    async fn get_membership_config(&amp;self) -&gt; Result&lt;MembershipConfig&gt; {
-        // ... snip ...
-    }
-
-    async fn get_initial_state(&amp;self) -&gt; Result&lt;InitialState&gt; {
-        // ... snip ...
-    }
-
-    // ... snip ...
-}
-
-#[tokio::main]
+<h2 id="4-put-everything-together"><a class="header" href="#4-put-everything-together">4. Put everything together</a></h2>
+<p>Finally, we put these part together and boot up a raft node
+<a href="https://github.com/datafuselabs/openraft/blob/main/example-raft-kv/src/bin/main.rs">main.rs</a>
+:</p>
+<pre><pre class="playground"><code class="language-rust">#[tokio::main]
 async fn main() {
-    // Get our node's ID from stable storage.
-    let node_id = get_id_from_storage().await;
+  #[actix_web::main]
+  async fn main() -&gt; std::io::Result&lt;()&gt; {
+    // Setup the logger
+    env_logger::init_from_env(Env::default().default_filter_or(&quot;info&quot;));
 
-    // Build our Raft runtime config, then instantiate our
-    // RaftNetwork &amp; RaftStorage impls.
-    let config = Arc::new(Config::build(&quot;primary-raft-group&quot;.into())
-        .validate()
-        .expect(&quot;failed to build Raft config&quot;));
-    let network = Arc::new(RaftRouter::new(config.clone()));
-    let storage = Arc::new(MemStore::new(node_id));
+    // Parse the parameters passed by arguments.
+    let options = Opt::parse();
+    let node_id = options.id;
 
-    // Create a new Raft node, which spawns an async task which
-    // runs the Raft core logic. Keep this Raft instance around
-    // for calling API methods based on events in your app.
-    let raft = Raft::new(node_id, config, network, storage);
+    // Create a configuration for the raft instance.
+    let config = Arc::new(Config::default().validate().unwrap());
 
-    let resp = raft.client_write(ClientWriteRequest::new(req)).await?;
+    // Create a instance of where the Raft data will be stored.
+    let store = Arc::new(ExampleStore::default());
+
+    // Create the network layer that will connect and communicate the raft instances and
+    // will be used in conjunction with the store created above.
+    let network = Arc::new(ExampleNetwork { store: store.clone() });
+
+    // Create a local raft instance.
+    let raft = Raft::new(node_id, config.clone(), network, store.clone());
+
+    // Create an application that will store all the instances created above, this will
+    // be later used on the actix-web services.
+    let app = Data::new(ExampleApp {
+      id: options.id,
+      raft,
+      store,
+      config,
+    });
+
+    // Start the actix-web server.
+    HttpServer::new(move || {
+      App::new()
+              .wrap(Logger::default())
+              .wrap(Logger::new(&quot;%a %{User-Agent}i&quot;))
+              .wrap(middleware::Compress::default())
+              .app_data(app.clone())
+              // raft internal RPC
+              .service(raft::append)
+              .service(raft::snapshot)
+              .service(raft::vote)
+              // admin API
+              .service(management::init)
+              .service(management::add_learner)
+              .service(management::change_membership)
+              .service(management::metrics)
+              .service(management::list_nodes)
+              // application API
+              .service(api::write)
+              .service(api::read)
+    })
+            .bind(options.http_addr)?
+            .run()
+            .await
+  }
 }
 
 </code></pre></pre>
-<p>Now it is time to write something to the cluster.
-As we did in our tests with <code>Raft::client_write()</code>:
-<a href="https://github.com/datafuselabs/openraft/blob/main/openraft/tests/client_writes.rs">client_writes</a></p>
+<h2 id="5-run-the-cluster"><a class="header" href="#5-run-the-cluster">5. Run the cluster</a></h2>
+<p>To set up a demo raft cluster includes:</p>
+<ul>
+<li>Bring up 3 uninitialized raft node;</li>
+<li>Initialize a single-node cluster;</li>
+<li>Add more raft nodes into it;</li>
+<li>Update the membership config.</li>
+</ul>
+<p><a href="https://github.com/datafuselabs/openraft/tree/main/example-raft-kv">example-raft-kv</a> describes these step in detail.</p>
+<p>And two test scripts for setting up cluster are provided:</p>
+<ul>
+<li>
+<p><a href="https://github.com/datafuselabs/openraft/blob/main/example-raft-kv/test-cluster.sh">test-cluster.sh</a>
+is a minimized bash script using curl to communicate with the raft cluster,
+in order to show what messages are exactly sent and received in plain HTTP. </p>
+</li>
+<li>
+<p><a href="https://github.com/datafuselabs/openraft/blob/main/example-raft-kv/tests/cluster/test_cluster.rs">test_cluster.rs</a>
+uses <code>ExampleClient</code> to set up a cluster and write data to it then read it.</p>
+</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cluster-controls"><a class="header" href="#cluster-controls">Cluster Controls</a></h1>
-<p>A raft cluster may be control in various ways using the API methods of the <code>Raft</code> type.
+<p>A raft cluster may be controlled in various ways using the API methods of the <code>Raft</code> type.
 This allows the application to influence the raft behavior.</p>
 <p>There are several concepts related to cluster control:</p>
 <ul>
@@ -487,21 +566,9 @@ state, AKA the <strong>split-brain</strong> state.</p>
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-membership"><a class="header" href="#dynamic-membership">Dynamic Membership</a></h1>
-<p>This impl of <code>Raft</code> offers a more flexible way to deal with cluster management:</p>
-<p>It offers only one cluster membership: the <strong>joint</strong> membership.
-<strong>Joint</strong> membership is no more an ephemeral state but instead, a normal
-long lasting config for a cluster.</p>
-<p>A uniform config is just a special case.</p>
-<blockquote>
-<p>This way it offers flexible cluster management such as hierarchical
-membership config that is aware of data-center layout, e.g., 
-<code>[{a, b, c}, {u, v, w}, {x, y, z}]</code> is a cluster with 9 nodes, every 3 nodes
-forms a group(which in real world, a data center.).
-And the quorum of such a cluster is majority of 3 groups, in which
-a majority is constituted, e.g, <code>[{a, b}, {u, v}]</code> is a quorum.</p>
-</blockquote>
-<hr />
-<p>Openraft offers 2 mechanisms for controlling member node lifecycle.</p>
+<p>Unlike the original raft, openraft treats all membership as a <strong>joint</strong> membership.
+A uniform config is just a special case of joint: the joint of only one config.</p>
+<p>Openraft offers two mechanisms for controlling member node lifecycle:</p>
 <h2 id="raftadd_learner"><a class="header" href="#raftadd_learner"><code>Raft::add_learner()</code></a></h2>
 <p>This method will add a learner to the cluster,
 and immediately begin syncing logs from the leader.</p>
@@ -515,33 +582,143 @@ elected, a Learner will no longer receive logs from the new leader.</p>
 <p>TODO(xp): store learners in <code>MembershipConfig</code>.</p>
 </li>
 </ul>
-<h2 id="raftchange_membership"><a class="header" href="#raftchange_membership"><code>Raft::change_membership()</code></a></h2>
-<p>This method will initiate a membership change.</p>
-<p>If there are nodes in the given config is not a learner, this method will add it
+<h2 id="raftchange_membershipnode_list"><a class="header" href="#raftchange_membershipnode_list"><code>Raft::change_membership(node_list)</code></a></h2>
+<p>This method will initiate a membership change and returns when the effective
+membership becomes <code>node_list</code>.</p>
+<p>If there are nodes in the given membership that is not a <code>Learner</code>, this method will add it
 as Learner first.
-Thus it is recommended that application always call <code>Raft::add_learner</code> first.
-Otherwise <code>change_membership</code> may block for long before committing the
+Thus it is recommended that the application always call <code>Raft::add_learner</code> first.
+Otherwise, <code>Raft::change_membership</code> may block for long before committing the
 given membership and return.</p>
-<p>The new membership config specified by this method will take effect at once.</p>
-<p>Once the new config is committed, a Voter that is no in the new config will
-revert to a Learner and is ready to remove.</p>
-<p>Correctness constrains:</p>
+<p>Once the new membership is committed, a <code>Voter</code> that is not in the new membership will
+revert to a <code>Learner</code> and is ready to remove.</p>
+<h2 id="extended-membership-change-algo"><a class="header" href="#extended-membership-change-algo">Extended membership change algo</a></h2>
+<p>Openraft tries to commit one or more membership logs to finally change the
+membership to <code>node_list</code>.
+In every step, the log it tries to commit is:</p>
 <ul>
 <li>
-<p>There is no uncommitted membership config on the leader.</p>
+<p>the <code>node_list</code> itself, if it is safe to change from previous membership to
+<code>node_list</code> directly.</p>
 </li>
 <li>
-<p>The new config has to contains a group that is the same as one of the last
-committed config.</p>
-<p>E.g., the last committed one is <code>[{a, b, c}]</code>, then a legal new config may be:
-a joint config: <code>[{a, b, c}, {x, y, z}]</code>.</p>
-<p>If the last committed one is <code>[{a, b, c}, {x, y, z}]</code>, a legal new config
-may be: <code>[{a, b, c}]</code>, or <code>[{x, y, z}]</code>.</p>
+<p>otherwise, a <strong>joint</strong> of the specified <code>node_list</code> and one config in the
+previous membership.</p>
 </li>
 </ul>
-<p>If the constrains are not satisfied, an error is returned and nothing is done
-except the learner will not be removed.</p>
-<p>TODO(xp): these constrains can be loosen, if raft stores the commit index.</p>
+<p>This algo that openraft uses is the so-called <strong>Extended membership change</strong>.</p>
+<blockquote>
+<p>It is a more generalized form of membership change.
+The original 2-step <strong>joint</strong> algo and 1-step algo in raft-paper are all specialized versions of this algo.</p>
+</blockquote>
+<p>This algo provides more flexible membership change than the original joint algo:</p>
+<ul>
+<li>
+<p>The original <strong>Joint</strong> algo:</p>
+<p>The original <strong>joint</strong> algo in raft-paper allows changing membership in an
+alternate pattern of joint membership and uniform membership.
+E.g.,  the membership entry in a log history could be:</p>
+<p><code>c1</code>  →  <code>c1c2</code>  →  <code>c2</code>  →  <code>c2c3</code>  →  <code>c3</code>  ...</p>
+<p>Where:</p>
+<ul>
+<li><code>cᵢ</code> is a uniform membership, such as <code>{a, b, c}</code>;</li>
+<li><code>cᵢcⱼ</code> is a joint of two node lists, such as <code>[{a, b, c}, {x, y, z}]</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Extended</strong> algo:</p>
+<p>Extended membership change algo allows changing membership in the
+following way:</p>
+<p><code>c1</code>  →  <code>c1c2c3</code>  →  <code>c3c4</code>  →  <code>c4</code>.</p>
+<p>Or revert to a previous membership:</p>
+<p><code>c1c2c3</code>  →  <code>c1</code>.</p>
+</li>
+</ul>
+<h4 id="flexibility"><a class="header" href="#flexibility">Flexibility</a></h4>
+<p>Another example shows that it is always safe to change membership from one
+to another along the edges in the following diagram:</p>
+<pre><code class="language-text">          c3
+         /  \
+        /    \
+       /      \
+   c1c3 ------ c2c3
+    / \        / \
+   /   \      /   \
+  /     \    /     \
+c1 ----- c1c2 ----- c2
+</code></pre>
+<h4 id="disjoint-memberships"><a class="header" href="#disjoint-memberships">Disjoint memberships</a></h4>
+<p>A counter-intuitive conclusion is that:</p>
+<p><strong>Even when two leaders propose two memberships without intersection, consensus will
+still, be achieved</strong>.</p>
+<p>E.g., given the current membership to be <code>c1c2</code>, if
+<code>L1</code> proposed <code>c1c3</code>,
+<code>L2</code> proposed <code>c2c4</code>.</p>
+<p>There won't be a brain split problem.</p>
+<h4 id="spec-of-extended-membership-change-algo"><a class="header" href="#spec-of-extended-membership-change-algo">Spec of extended membership change algo</a></h4>
+<p>This algo requires four constraints to work correctly:</p>
+<ul>
+<li>
+<p>(0) <strong>use-at-once</strong>:
+The new membership that is appended to log will take effect at once, i.e., openraft
+uses the last seen membership config in the log, no matter it is committed or not.</p>
+</li>
+<li>
+<p>(1) <strong>propose-after-commit</strong>:
+A leader is allowed to propose new membership only when the previous one is
+committed.</p>
+</li>
+<li>
+<p>(2) <strong>old-new-intersect</strong>(safe transition):
+(This is the only constraint that is loosened from the original raft) Any
+quorum in new membership(<code>m'</code>) intersect with any quorum in the old
+committed membership(<code>m</code>):</p>
+<p><code>∀qᵢ ∈ m, ∀qⱼ ∈ m'</code>: <code>qᵢ ∩ qⱼ ≠ ø</code>.</p>
+</li>
+<li>
+<p>(3) <strong>initial-log</strong>:
+A leader has to replicate an initial blank log to a quorum in last seen
+membership to commit all previous logs.</p>
+</li>
+</ul>
+<p>In our implementation, (2) <strong>old-new-intersect</strong> is simplified to:
+The new membership has to contain a config entry that is the same as one in the last
+committed membership.</p>
+<p>E.g., given the last committed one is <code>[{a, b, c}]</code>, then a valid new membership may be:
+a joint membership: <code>[{a, b, c}, {x, y, z}]</code>.</p>
+<p>If the last committed one is <code>[{a, b, c}, {x, y, z}]</code>, a valid new membership
+may be: <code>[{a, b, c}]</code>, or <code>[{x, y, z}]</code>.</p>
+<h3 id="proof-of-correctness"><a class="header" href="#proof-of-correctness">Proof of correctness</a></h3>
+<p>Assumes there was a brain split problem occurred,
+then there are two leaders(<code>L1</code> and <code>L2</code>) proposing different membership(<code>m1</code> and <code>m2</code>(<code>mᵢ = cᵢcⱼ...</code>)):</p>
+<p><code>L1</code>: <code>m1</code>,
+<code>L2</code>: <code>m2</code></p>
+<p>Thus the <code>L1</code> log history and the <code>L2</code> log history diverged.
+Let <code>m0</code> be the last common membership in the log histories:</p>
+<pre><code class="language-text">L1       L2
+
+m1       m2
+ \      /
+  \    o   term-2
+   \   |
+    `--o   term-1
+       |
+       m0
+</code></pre>
+<p>From (1) <strong>propose-after-commit</strong>,</p>
+<ul>
+<li><code>L1</code> must have committed log entry <code>m0</code> to a quorum in <code>m0</code>  in <code>term_1</code>.</li>
+<li><code>L2</code> must have committed log entry <code>m0</code> to a quorum in <code>m0</code>, in <code>term_2</code>.</li>
+</ul>
+<p>Assumes <code>term_1 &lt; term_2</code>.</p>
+<p>From (3) <strong>initial-log</strong>, <code>L2</code> has at least one log with <code>term_2</code> committed in a
+quorum in <code>m0</code>.</p>
+<p>∵ (2) <strong>old-new-intersect</strong> and <code>term_1 &lt; term_2</code></p>
+<p>∴ log entry <code>m1</code> can never be committed by <code>L1</code>, 
+because log replication or voting will always see a higher <code>term_2</code> on a node in a quorum in <code>m0</code>.</p>
+<p>For the same reason, a candidate with log entry <code>m1</code> can never become a leader.</p>
+<p>∴ It is impossible that there are two leaders that both can commit a log entry.</p>
+<p>QED.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="metrics"><a class="header" href="#metrics">Metrics</a></h1>
 <p><code>Raft</code> exports metrics on its internal state via <code>Raft::metrics() -&gt; watch::Receiver&lt;RaftMetrics&gt;</code>.</p>
 <p><code>RaftMetrics</code> contains useful information such as:</p>
@@ -568,8 +745,8 @@ Because internally, <code>watch::channel()</code> only stores one state.</p>
         .          ‖                      .
         .          ‖ client_write(impl AppData) -&gt; impl AppDataResponse
         .          ‖ client_read()        .
-        .          ‖ add_non_voter()      .
-        .          ‖ change_member()      .
+        .          ‖ add_learner()      .
+        .          ‖ change_membership()      .
         .          v                      .
         .          Raft                   .             .-------------&gt; Raft -----.
         ...................................             |                         |
@@ -621,7 +798,7 @@ Because internally, <code>watch::channel()</code> only stores one state.</p>
 <p>There are several threads, AKA tokio-tasks in this raft impl:</p>
 <ul>
 <li>
-<p>RaftCore: all log and state machine operation is done in this thread.
+<p>RaftCore: all logs and state machine operations are done in this thread.
 Thus there is no race condition</p>
 <ul>
 <li>All raft state runs in this task, such as LeaderState, CandidateState etc.</li>
@@ -707,11 +884,11 @@ The messages sent to replication task includes:</p>
 <p>Replication to RaftCore:</p>
 <ul>
 <li>
-<p>Replication task send the already replicated log id
+<p>Replication task sends the already replicated log id
 to RaftCore through another per-replication channel.</p>
 </li>
 <li>
-<p>Replication task send a <code>NeedSnapshot</code> request through the same channel to
+<p>Replication task sends a <code>NeedSnapshot</code> request through the same channel to
 ask RaftCore to build a snapshot if there is no log a follower/learner
 needs.</p>
 </li>
@@ -719,7 +896,7 @@ needs.</p>
 </li>
 <li>
 <p>Build-snapshot to RaftCore: RaftCore spawn a separate task to build a snapshot
-asynchronously. When finished, the spawned task send to RaftCore a message
+asynchronously. When finished, the spawned task sends to RaftCore a message
 including the snapshot info.</p>
 </li>
 </ul>
